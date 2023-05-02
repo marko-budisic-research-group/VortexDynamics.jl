@@ -6,6 +6,7 @@ include("VortexODE.jl")
 
 export vortex_biot_savart
 export vortex_biot_savart!
+export vorticity
 # 1. Define initial configuration of vortices.
 # 2. Simulate the differential equation
 # 3. Store the raw trajectory data.

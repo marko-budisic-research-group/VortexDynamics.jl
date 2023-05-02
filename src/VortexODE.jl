@@ -53,33 +53,24 @@ end
 Allocating version.
 """
 function vortex_biot_savart( u, args...; kwargs... )
+
     D = similar(u)
     vortex_biot_savart!( D, u, args...; kwargs...)
 
     return D
 end
 
-function vortex_biot_savart( u::Tuple{LinRange,LinRange}, args...; kwargs... )
-    z0 = zeros( length(u[1]) * length(u[2]))
-    D = ComponentArray(x=similar(z0), y=similar(z0))
-    vortex_biot_savart!( D, u, args...; kwargs...)
 
-    return D
-end
+function vorticity( w, γ, t; model=:burgers, ν = 1e-3 )
 
+    ω(p) = sum( 
+            [  (γi) /(2 * π * ν) * exp( -(1/2/ν) * hypot(x-p.x, y-p.y).^2 ) 
+                for (x, y, γi) in zip(w.x, w.y, γ) 
+                ] 
+                )
 
-function vortex_biot_savart!( D, u::Tuple{LinRange,LinRange}, args...; kwargs...)
-
-
-p = [ ComponentVector(x=x, y=y) for x in u[1], y in u[2]]
-p = ComponentArray( 
-    x= vec( map( pp -> pp.x, p) ),  
-    y= vec( map( pp -> pp.y, p) ) )
-
-
-vortex_biot_savart!(D, p, args...; kwargs...)
-
-D.x = reshape( D.x, length.(u))
-D.y = reshape( D.y, length.(u))
+    return ω
+    
 
 end
+
