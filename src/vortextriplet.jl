@@ -5,9 +5,11 @@ using ComponentArrays
 
 # 1. Define initial configuration of vortices.
 nVortices = 10
+a = round.(rand(Float64, 3), digits=1)
+b = round.(rand(Float64, 3), digits=1)
 u0 = ComponentArray(
-    x = [0.0; 0.0; 0.05], 
-    y = [-1.0; 1.0; 0.0] ./ 10,
+    x = [a[1]; a[2]; a[3]],
+    y = [b[1]; b[2]; b[3]] ./ 10,
     )
 γ = [1.0; 1.1; 1.0]
 
@@ -27,7 +29,10 @@ ux = hcat( (s.x for s in sol.u)... )
 uy = hcat( (s.y for s in sol.u)... )
 
 using NPZ
-npzwrite("vortex-unipole.npz", 
+using Dates
+
+name = "results/vortex-" * string(today())*"-"*randstring(2) *".npz"
+npzwrite( name, 
     ux = ux,
     uy = uy,
     t = sol.t,
