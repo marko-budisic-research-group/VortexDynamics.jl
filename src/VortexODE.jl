@@ -41,7 +41,7 @@ function vortex_biot_savart!( D, u, γ, t, w; core = 0.0)
         Pc .= Pc ./ (dist2 .+ core^2)
         Pc .= Pc .* transpose(γ)
 
-        Pc .*= (-1/2/π)
+        Pc .*= (1/2/π)
         Pc[dist2 .== 0] .= 0 # ignore self-contribution
         @view(D[i]) .= sum(Pc,dims=2)
     end
@@ -61,16 +61,22 @@ function vortex_biot_savart( u, args...; kwargs... )
 end
 
 
-function vorticity( w, γ, t; model=:burgers, ν = 1e-3 )
+"""
+function vorticity_model( w, γ, t; model=:burgers, ν = 1e-3 )
 
-    ω(p) = sum( 
-            [  (γi) /(2 * π * ν) * exp( -(1/2/ν) * hypot(x-p.x, y-p.y).^2 ) 
+Returns a function p -> ω(p) that evaluates the chosen vorticity model at a specific gridpoint.
+
+"""
+function vorticity_burgers( γ, t, w; ν = 1e-3 )
+
+    return p -> [  (γi) /(2 * π * ν) * exp( -(1/2/ν) * hypot(x-p.x, y-p.y).^2 ) 
                 for (x, y, γi) in zip(w.x, w.y, γ) 
-                ] 
-                )
-
-    return ω
-    
+                ] |> sum
 
 end
 
+function velocity( γ, t, w; kwargs... )
+
+    return p -> vortex_biot_savart( p, γ, t, w; kwargs...)
+
+end
