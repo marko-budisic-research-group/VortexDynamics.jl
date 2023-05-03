@@ -75,8 +75,38 @@ function vorticity_burgers( γ, t, w; ν = 1e-3 )
 
 end
 
+"""
+function velocity( γ, t, w; kwargs... )
+
+Calculate velocity field for a set of vortices. 
+
+Returns a function p -> v(p) that evaluates the Biot--Savart law at a specific location by currying the vortex_biot_savart method.
+
+"""
 function velocity( γ, t, w; kwargs... )
 
     return p -> vortex_biot_savart( p, γ, t, w; kwargs...)
+
+end
+
+function getfields( ws, ts; px, py, γ, ν = 1e-3  )
+
+    grid = [ ComponentVector(x=x, y=y) for x in px, y in py]
+
+    vs = [
+        velocity( γ, t, w ).(grid)
+        for (t,w) in zip(ts,ws)
+    ]
+
+    Ωs = [
+        vorticity_burgers(γ, t, w; ν ).(grid)
+        for (t,w) in zip(ts,ws)
+    ]
+
+    vxs = [getindex.(v,:x) for v in vs]
+    vys = [getindex.(v,:x) for v in vs]
+
+    return vxs, vys, Ωs
+
 
 end
