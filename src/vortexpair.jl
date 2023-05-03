@@ -1,6 +1,6 @@
 using Random
 
-using NeuralODETDA
+using VortexDynamics
 using ComponentArrays
 
 # 1. Define initial configuration of vortices.

@@ -1,4 +1,4 @@
-module NeuralODETDA
+module VortexDynamics
 
 using Random
 
@@ -18,4 +18,4 @@ export getfields
 
 
 
-end # module NeuralODETDA
+end # module VortexDynamics

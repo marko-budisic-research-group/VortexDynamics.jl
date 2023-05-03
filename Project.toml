@@ -1,4 +1,4 @@
-name = "NeuralODETDA"
+name = "VortexDynamics"
 uuid = "6fc9d37b-5740-4728-992b-f5f39a8d9ba9"
 authors = ["Marko <mbudisic@clarkson.edu>"]
 version = "0.1.0"

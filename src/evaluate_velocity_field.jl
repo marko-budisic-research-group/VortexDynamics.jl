@@ -1,5 +1,5 @@
-using NeuralODETDA
-using Makie
+using VortexDynamics
+using CairoMakie
 
 idx = 110
 
