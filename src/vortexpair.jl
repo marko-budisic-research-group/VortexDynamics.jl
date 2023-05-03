@@ -21,20 +21,25 @@ tf = 20.
 diffeq = ODEProblem( vortex_biot_savart!, u0, (t0,tf),γ )
 sol = solve( diffeq, Tsit5(); saveat=Δ )
 
-# 3. Evaluate the velocity field on a coarse grid, and vorticity field on a fine grid 
+# extract just a subset of timesteps (not really necessary)
 subselect = 1:100
 us = @view sol.u[subselect]
 ts = @view sol.t[subselect]
 
+
+
 # extract horizontal and vertical positions of vortices for each snapshot and merge (hcat) them into a matrix
 ux = hcat(getindex.(us,:x)...)
 uy = hcat(getindex.(us,:y)...)
+
+# 3. Evaluate velocity and vorticity fields on a grid
 
 # get velocity and vorticity fields
 grid_x = LinRange(-1.2,1.2,101)
 grid_y = LinRange(-1.2,1.2,101)
 vxs, vys, Ωs = getfields( us, ts; px=grid_x, py=grid_y, γ, ν=1e-3 );
 
+# 4. Store to numpy files
 using NPZ
 npzwrite("vortex-pair-tracks.npz", 
     ux = ux,
@@ -53,8 +58,10 @@ npzwrite("vortex-pair-fields.npz",
     Omega = cat(Ωs...; dims=3))
 
 
-using Makie
+# visualize first snapshot of vorticity and the vortex track overlaid
+using CairoMakie
 ax = Makie.heatmap(grid_x, grid_y, Ωs[1], colormap=:balance )
+
 for k = 1:length(γ)
     lines!( getindex.( getindex.(us, :x), k ),
             getindex.( getindex.(us, :y), k ) )
