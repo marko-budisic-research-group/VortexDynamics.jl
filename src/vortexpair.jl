@@ -5,9 +5,16 @@ using ComponentArrays
 
 # 1. Define initial configuration of vortices.
 nVortices = 10
+a = round.(rand(Float64, 2), digits=1)
+b = round.(rand(Float64, 2), digits=1)
 u0 = ComponentArray(
+<<<<<<< Updated upstream
     x = [0.0; 0.0], 
     y = 0.75 .+ [-1.0; 1.0] ./ 5,
+=======
+    x = [a[1]; a[2]], 
+    y = [b[1]; b[2]] ./ 10,
+>>>>>>> Stashed changes
     )
 γ = [1.0; -0.5]
 
@@ -41,7 +48,13 @@ vxs, vys, Ωs = getfields( us, ts; px=grid_x, py=grid_y, γ, ν=1e-3 );
 
 # 4. Store to numpy files
 using NPZ
+<<<<<<< Updated upstream
 npzwrite("vortex-pair-tracks.npz", 
+=======
+using Dates
+
+npzwrite("results_pair/vortex-" * string(today())*"-"*randstring(2) *".npzz", 
+>>>>>>> Stashed changes
     ux = ux,
     uy = uy,
     t = ts,
