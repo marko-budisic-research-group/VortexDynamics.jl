@@ -46,14 +46,14 @@ using NPZ
 using Dates
 
 uniquelabel = string(today())*"-"*randstring(2)
-npzwrite("../results/vortex-tracks-" * uniquelabel *".npz", 
+npzwrite(dirname( pathof(VortexDynamics) ) * "/../results/vortex-tracks-" * uniquelabel *".npz", 
     ux = ux,
     uy = uy,
     t = ts,
     gamma = γ)
 
 
-npzwrite("../results/vortex-fields-"* uniquelabel *".npz", 
+npzwrite(dirname( pathof(VortexDynamics) ) * "/../results/vortex-fields-"* uniquelabel *".npz", 
     grid_x = collect(grid_x),
     grid_y = collect(grid_y),
     t = ts,
