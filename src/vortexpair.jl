@@ -38,7 +38,7 @@ uy = hcat(getindex.(us,:y)...)
 
 # get velocity and vorticity fields
 grid_x = LinRange(-1.2,1.2,101)
-grid_y = LinRange(-1.2,1.2,101)
+grid_y = LinRange(-1.2,1.2,121)
 vxs, vys, Ωs = getfields( us, ts; px=grid_x, py=grid_y, γ, ν=1e-3 );
 
 # 4. Store to numpy files
