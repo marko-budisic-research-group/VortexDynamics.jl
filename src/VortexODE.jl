@@ -104,7 +104,7 @@ function getfields( ws, ts; px, py, γ, ν = 1e-3  )
     ]
 
     vxs = [getindex.(v,:x) for v in vs]
-    vys = [getindex.(v,:x) for v in vs]
+    vys = [getindex.(v,:y) for v in vs]
 
     return vxs, vys, Ωs
 
